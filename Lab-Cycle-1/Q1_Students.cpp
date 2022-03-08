@@ -6,55 +6,59 @@ class student
     private:
     char *Name;
     int Roll_no; 
-    int *Mark;
-    int no_of_subjects=3;   
-    static int total_mark;
+    int Mark1,Mark2,Mark3,total_mark;;
+    static int out_of_mark;   
     public:
     static void update_total(int a)
     {
-		total_mark=a;
-	}
-    student()
-    {
-		Mark=new int[no_of_subjects];
+		out_of_mark=a;
 	}
     ~student()
 	{
 		delete Name;
-		delete Mark;
 		cout<<"Successfully deleted";
 	}
     void input(char*, int);
     void display(void);
     void calcGrade(void);
 };
-int student::total_mark=100;
+int student::out_of_mark=100;
 void student::input(char* name, int roll_no)
 {
     Name=new char[strlen(name)+1];
     strcpy(Name,name);
     Roll_no=roll_no;
-    for(int i=0;i<no_of_subjects;i++)
-    {
-        cout<<"\nEnter mark of subject "<<i+1<<" : ";
-        cin>>Mark[i];
-        if(Mark[i]>total_mark)
-        Mark[i]=total_mark;
-    }
+    cout<<"Subject 1\t\t: ";
+    cin>>Mark1;
+    cout<<"Subject 2\t\t: ";
+    cin>>Mark2;
+    cout<<"Subject 3\t\t: ";
+    cin>>Mark3;
+    if(Mark1<0)
+    Mark1=Mark1*-1;
+    if(Mark2<0)
+    Mark2=Mark2*-1;
+    if(Mark3<0)
+    Mark3=-1*Mark3;
+    if(Mark1>out_of_mark)
+    Mark1=out_of_mark;
+    if(Mark2>out_of_mark)
+    Mark2=out_of_mark;
+    if(Mark3=out_of_mark)
+    Mark3=out_of_mark;
 }
 void student::display(void)
 {
-    cout<<"\n Name : "<<Name<<"\n Roll Number : "<<Roll_no;
+    cout<<"\nName\t\t\t: "<<Name<<"\nRoll Number\t\t: "<<Roll_no;
     calcGrade();
     cout<<"\n";
 }
 void student::calcGrade(void)
 {
-    for(int i=0;i<no_of_subjects;i++)
+    total_mark=Mark1+Mark2+Mark3;
+    cout<<"\nGrade\t\t\t: ";
+    switch (total_mark/((out_of_mark*3)/10))
     {
-        cout<<"\n Subject "<<i+1<<" : ";
-        switch (Mark[i]/(total_mark/10))
-        {
         case 0:cout<<"E";
             break;
         case 1:cout<<"E+";
@@ -77,9 +81,8 @@ void student::calcGrade(void)
             break;
         case 10:cout<<"A+";
             break;
-        default:
-            break;
-        }
+        default:cout<<"A+";
+            break;    
     }
 }
 int main()
@@ -87,26 +90,26 @@ int main()
 	int total;
     char firstname[30],secondname[30];
     student *list;
-    int number, rollno;
-    cout<<"\nEnter total mark : ";
+    int number_of_students, rollno;
+    cout<<"\nEnter total mark\t\t\t: ";
     cin>>total;
     student::update_total(total); 
-    cout<<"\nEnter the total number of students : ";
-    cin>>number;
-    list=new student[number];
-    for(int i=0; i<number; i++)
+    cout<<"\nEnter the total number of students\t: ";
+    cin>>number_of_students;
+    list=new student[number_of_students];
+    for(int i=0; i<number_of_students; i++)
     {
-        cout<<"\nRollno : ";
+        cout<<"\nRollno\t\t\t: ";
         cin>>rollno;
-        cout<<"\nEnter First Name : ";
+        cout<<"Enter First Name\t: ";
         cin>>firstname;
-        cout<<"Enter Second Name : ";
+        cout<<"Enter Second Name\t: ";
         cin>>secondname;
         strcat(firstname," ");
         strcat(firstname,secondname);
         list[i].input(firstname, rollno);
     }
-    for(int i=0; i<number; i++)
+    for(int i=0; i<number_of_students; i++)
     list[i].display();
     delete[] list;
     return 0;
