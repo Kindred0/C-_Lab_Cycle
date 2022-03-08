@@ -2,47 +2,70 @@
 using namespace std;
 class sample
 {
-    int *array;
-    int size;
+    int **d_array;
+    int row,coloumn;
     public:
     sample(){}
-    sample(int);
+    sample(int,int);
     ~sample();
     void getelement(void);
     void display(void);
 };
-sample::sample(int n)
+sample::sample(int r,int c)
 {
-    size=n;
-    array=new int[size];
-    cout<<"\nConstructor is called during execution"<<endl;
+    row=r;
+    coloumn=c;
+    d_array=new int*[row];
+    cout<<"\nArray of pointers of length "<<row<<" is created with constructors"<<endl;
+    for(int i=0;i<row;i++)
+    {
+        d_array[i]=new int[coloumn];
+        cout<<"\nArray of integer of length "<<coloumn<<" is dynamically created at location "<<i;
+    }
 }
 sample::~sample(void)
 {
-    delete[] array;
-    cout<<"\n\nSuccesfully deleted"<<endl<<"\nDestructor is called after execution";
+    for(int i=0;i<row;i++)
+    {
+        delete d_array[i];
+        cout<<"\nThe dynamically created integer array at location "<<i<<" is successfully deleted";
+    }
+    delete[] d_array;
+    cout<<"\nThe pointer array is successfully deleted using the destructor";
 }
 void sample::getelement(void)
 {
-    for(int i=0;i<size;i++)
+    for(int i=0;i<row;i++)
     {
-        cout<<"\nEnter element : ";
-        cin>>array[i];
+        for(int j=0;j<coloumn;j++)
+        {
+            cout<<"\nEnter at ["<<i<<"]["<<j<<"]\t: ";
+            cin>>d_array[i][j];
+        }
     }
 }
 void sample::display(void)
 {
-	cout<<endl;
-    for(int i=0;i<size;i++)
-    cout<<array[i]<<" ";
+    cout<<"{ ";
+    for(int i=0;i<row;i++)
+    {
+        for(int j=0;j<coloumn;j++)
+        {
+            cout<<d_array[i][j]<<" ";
+        }
+        cout<<"| ";
+    }
+    cout<<"}";
 }
 int main()
 {
-    int size;
-    cout<<"\nEnter the size of the array : ";
-    cin>>size;
-    sample s(size);
+    int row,coloumn;
+    cout<<"\nEnter rows and coloumns respectively\t: ";
+    cin>>row>>coloumn;
+    sample s(row,coloumn);
     s.getelement();
+    cout<<"\n";
     s.display();
+    cout<<"\n";
     return 0;
 }
