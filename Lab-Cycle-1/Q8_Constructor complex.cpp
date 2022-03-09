@@ -17,18 +17,29 @@ class complex
         image =i;
     }
     complex(const complex &,const complex &);
-    complex operator+(complex);
-    void display(void)
-    {
-        cout<<real<<" + "<<image<<"i"<<endl;
-    }
+    complex sum(complex);
+    void display(void);
 };
+void complex::display(void)
+{
+    if(real!=0)
+    {
+        if(image>0)
+        cout<<real<<" + "<<image<<"i";
+        else if(image<0)
+        cout<<real<<" - "<<image*-1<<"i";
+        else
+        cout<<real;
+    }
+    else
+    cout<<image<<"i";
+}
 complex::complex(const complex &a,const complex &b)
 {
     real=a.real+b.real;
     image=a.image+b.image;
 }
-complex complex::operator+(complex a)
+complex complex::sum(complex a)
 {
     complex b;
     b.real=real+a.real;
@@ -37,27 +48,28 @@ complex complex::operator+(complex a)
 }
 int main()
 {
+    complex A,B,C,D;
     float r,i;
-    cout<<"\nEnter the real and imaginary part of complex Z1 : "<<endl;
+    cout<<"\nEnter the real and imaginary part of complex Z1 : ";
     cin>>r>>i;
-    complex A(r,i);
+    A=complex(r,i);
     cout<<"\nZ1 = ";
     A.display();
-    cout<<"\nEnter the real and imaginary part of complex Z2 : "<<endl;
+    cout<<"\nEnter the real and imaginary part of complex Z2 : ";
     cin>>r>>i;
-    complex B(r,i);
+    B=complex(r,i);
     cout<<"\nZ2 = ";
     B.display();
-    complex C;
-    C=A+B;
+    C=A.sum(B);
     cout<<"\nZ1 		= ";
     A.display();
     cout<<"\nZ2 		= ";
     B.display();
     cout<<"\nZ1 + Z2 	= ";
     C.display();
-    complex D(A,C);
+    D=complex(A,C);
     cout<<"\nZ1 + Z3 	= ";
     D.display();
+    cout<<"\n";
     return 0;
 }
