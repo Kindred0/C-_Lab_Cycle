@@ -14,11 +14,11 @@ void Time::display(void)
 }
 void Time::input(void)
 {
-    cout<<"\n Enter seconds : ";
+    cout<<"Enter seconds\t: ";
     cin>>seconds;
-    cout<<"\n Enter minutes : ";
+    cout<<"Enter minutes\t: ";
     cin>>minutes;
-    cout<<"\n Enter hours : ";
+    cout<<"Enter hours\t: ";
     cin>>hours;
     minutes=minutes+(seconds/60);
     seconds=seconds%60;
@@ -40,12 +40,13 @@ int main()
     Time t1,t2,t3;
     cout<<"\nTime 1\n";
     t1.input();
-    cout<<"\nTime 2\n";
+    t1.display();
+    cout<<"\n\nTime 2\n";
     t2.input();
     t3.sum(t1,t2);
-    t1.display();
     t2.display();
-    cout<<"\nThe time is "<<endl;
+    cout<<"\n\nThe time is "<<endl;
     t3.display();
+    cout<<"\n";
     return 0;
 }
