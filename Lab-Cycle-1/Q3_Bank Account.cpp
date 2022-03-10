@@ -7,40 +7,31 @@ class Account
     float balance;
     string cust_name, acc_type;
     public:
-    Account(){}
-    Account(int,string,float,string);
-    Account(const Account &);
-    void new_account(int,string,float,string);
+    void new_account(void);
     void withdraw(int);
     void balance_enquiry(void);
     void deposit(int);
     void acc_statement(void);
     int check(void);
 };
-Account::Account(const Account &A)
+void Account::new_account(void)
 {
-    acc_no=A.acc_no;
-    cust_name=A.cust_name;
-    balance=A.balance;
-    acc_type=A.acc_type;
-}
-Account::Account(int number,string name,float bal,string type)
-{
-    acc_no=number;
-    cust_name=name;
-    balance=bal;
-    acc_type=type;
-}
-void Account::new_account(int number,string name,float bal,string type)
-{
-    acc_no=number;
-    cust_name=name;
-    balance=bal;
-    acc_type=type;
+    string secondname;
+    cout<<"\nAccount Number\t: ";
+    cin>>acc_no;
+    cout<<"First Name\t: ";
+    cin>>cust_name;
+    cout<<"Second Name\t: ";
+    cin>>secondname;
+    cust_name=cust_name+" "+secondname;
+    cout<<"Intital Balance\t: ";
+    cin>>balance;
+    cout<<"Type of Account\t: ";
+    cin>>acc_type;
 }
 void Account::balance_enquiry(void)
 {
-    cout<<"\n\nbalance left : "<<balance;
+    cout<<"\nNew balance\t: "<<balance;
 }
 void Account::withdraw(int debit)
 {
@@ -71,153 +62,124 @@ int Account::check(void)
 }
 int main()
 {
-    int action,n=0,Acc_No,amount,i;
-    string name,secondname,type;
+    int action,Acc_no,n=0,amount,i,stop=0;
     char tryagain;
     Account *list,*templist;
-    list=new Account;
-    l1:
-    cout<<"\n1\t: Create a new account\n2\t: Account Inquiry\n3\t: Deposit amount\n4\t: Withdraw amount";
-    cout<<"\nEnter the action\t: ";
-    cin>>action;
-    if(action==1)
+    list=new Account[1];
+    while(stop==0)
     {
-        if(n==0)
+        cout<<"\n\n1\t: Create a new account\n2\t: Account Inquiry\n3\t: Deposit amount\n4\t: Withdraw amount\n5\t: Exit";
+        cout<<"\nEnter the action\t: ";
+        cin>>action;
+        if(action==1)
         {
-            list=new Account[1];
-            cout<<"\nAccount Number\t: ";
-            cin>>Acc_No;
-            cout<<"First Name\t: ";
-            cin>>name;
-            cout<<"Second Name\t: ";
-            cin>>secondname;
-            name=name+" "+secondname;
-            cout<<"Intital Balance\t: ";
-            cin>>amount;
-            cout<<"Type of Account\t: ";
-            cin>>type;
-            list[0].new_account(Acc_No,name,amount,type);
-            n=n+1;
-        }
-        else
-        {
-            templist=new Account[n];
-            for(i=0;i<n;i++)
+            if(n==0)
             {
-                templist[i]=Account(list[i]);
+                list[0].new_account();
+                n=n+1;
             }
-            delete[] list;
-            list=new Account[n+1];
-            for(i=0;i<n;i++)
+            else
             {
-                list[i]=Account(templist[i]);
-            }
-            delete[] templist;
-            cout<<"\nAccount Number\t: ";
-            cin>>Acc_No;
-            cout<<"First Name\t: ";
-            cin>>name;
-            cout<<"Second Name\t: ";
-            cin>>secondname;
-            name=name+" "+secondname;
-            cout<<"Intital Balance\t: ";
-            cin>>amount;
-            cout<<"Type of Account\t: ";
-            cin>>type;
-            list[n].new_account(Acc_No,name,amount,type);
-            n=n+1;
-        }
-    }
-    else if(action==2)
-    {
-        if(n==0)
-        {
-            cout<<"\nNo accounts created yet, Create an account first";
-            goto l1;
-        }
-        l2:
-        cout<<"\nEnter the account number\t: ";
-        cin>>Acc_No;
-        for(i=0;i<n;i++)
-        {
-            if(Acc_No==list[i].check())
-            {
-                list[i].acc_statement();
-                break;
+                templist=new Account[n];
+                for(i=0;i<n;i++)
+                {
+                    templist[i]=Account(list[i]);
+                }
+                delete[] list;
+                list=new Account[n+1];
+                for(i=0;i<n;i++)
+                {
+                    list[i]=Account(templist[i]);
+                }
+                delete[] templist;
+                list[n].new_account();
+                n=n+1;
             }
         }
-        if(i==n)
+        else if(action==2)
         {
-            cout<<"\nNo such account is created, Try again";
-            goto l2;
-        }
-    }
-    else if(action==3)
-    {
-        if(n==0)
-        {
-            cout<<"\nNo accounts created yet, Create an account first";
-            goto l1;
-        }
-        l3:
-        cout<<"\nEnter the account number\t: ";
-        cin>>Acc_No;
-        for(i=0;i<n;i++)
-        {
-            if(Acc_No==list[i].check())
+            if(n==0)
             {
-                list[i].acc_statement();
-                cout<<"\nEnter the amount to deposit\t: ";
-                cin>>amount;
-                list[i].deposit(amount);
-                list[i].balance_enquiry();
-                break;
+                cout<<"\nNo accounts created yet, Create an account first";
+            }
+            else
+            {
+                cout<<"\nEnter the account number\t: ";
+                cin>>Acc_no;
+                for(i=0;i<n;i++)
+                {
+                    if(Acc_no==list[i].check())
+                    {
+                        list[i].acc_statement();
+                        break;
+                    }
+                }
+                if(i==n)
+                {
+                    cout<<"\nNo such account is created, Try again";
+                }
             }
         }
-        if(i==n)
+        else if(action==3)
         {
-            cout<<"\nNo such account is created, Try again";
-            goto l3;
-        }
-    }
-    else if(action==4)
-    {
-        if(n==0)
-        {
-            cout<<"\nNo accounts created yet, Create an account first";
-            goto l1;
-        }
-        l4:
-        cout<<"\nEnter the account number\t: ";
-        cin>>Acc_No;
-        for(i=0;i<n;i++)
-        {
-            if(Acc_No==list[i].check())
+            if(n==0)
             {
-                list[i].acc_statement();
-                cout<<"\nEnter the amount to withdraw\t: ";
-                cin>>amount;
-                list[i].withdraw(amount);
-                list[i].balance_enquiry();
-                break;
+                cout<<"\nNo accounts created yet, Create an account first";
+            }
+            else
+            {
+                cout<<"\nEnter the account number\t: ";
+                cin>>Acc_no;
+                for(i=0;i<n;i++)
+                {
+                    if(Acc_no==list[i].check())
+                    {
+                        list[i].acc_statement();
+                        cout<<"\nEnter the amount to deposit\t: ";
+                        cin>>amount;
+                        list[i].deposit(amount);
+                        list[i].balance_enquiry();
+                        break;
+                    }
+                }
+                if(i==n)
+                {
+                    cout<<"\nNo such account is created, Try again";
+                }
             }
         }
-        if(i==n)
+        else if(action==4)
         {
-            cout<<"\nNo such account is created, Try again";
-            goto l4;
+            if(n==0)
+            {
+                cout<<"\nNo accounts created yet, Create an account first";
+            }
+            else
+            {
+                cout<<"\nEnter the account number\t: ";
+                cin>>Acc_no;
+                for(i=0;i<n;i++)
+                {
+                    if(Acc_no==list[i].check())
+                    {
+                        list[i].acc_statement();
+                        cout<<"\nEnter the amount to withdraw\t: ";
+                        cin>>amount;
+                        list[i].withdraw(amount);
+                        list[i].balance_enquiry();
+                        break;
+                    }
+                }
+                if(i==n)
+                {
+                    cout<<"\nNo such account is created, Try again";
+                }
+            }
         }
+        else if(action==5)
+        stop=1;
     }
-    else 
-    {
-        cout<<"\nInvalid action, Try again";
-        goto l1;
-    }
-    cout<<"\nDo you wish to do anther process?\n(Type y for yes and n for no)";
-    cin>>tryagain;
-    if(tryagain=='y')
-    goto l1;
-    cout<<"Program is closed\nA total of "<<n<<" Accounts have been created";
+    cout<<"Program is closed\nA total of "<<n<<" Accounts have been created\n";
     delete[] list;
     return 0;
 }
