@@ -10,15 +10,15 @@ class MATRIX
     int noofdigit(int);
     void printspace(int);
     public:
-    MATRIX(){row=0;coloumn=0;element=new float*[1];}
+    MATRIX(){};
     MATRIX(int,int);
-    ~MATRIX();
+    //~MATRIX();
     void matrix_input(void);
-    friend MATRIX matrix_add(MATRIX,MATRIX);
+    friend MATRIX matrix_add(const MATRIX &,const MATRIX &);
     friend MATRIX matrix_traspose(MATRIX);
-    friend MATRIX matrix_mult(MATRIX,MATRIX);
-    friend float matrix_determinant(MATRIX);
-    friend int matrix_trace(MATRIX);
+    friend MATRIX matrix_mult(const MATRIX &,const MATRIX &);
+    friend float matrix_determinant(const MATRIX &);
+    friend int matrix_trace(const MATRIX &);
     void display(void);
 };
 MATRIX::MATRIX(int a,int b)
@@ -34,41 +34,39 @@ MATRIX::MATRIX(int a,int b)
     else 
     cout<<"\nInvalid input";
 }
-MATRIX::~MATRIX()
+/*MATRIX::~MATRIX()
 {
-    cout<<"\nDestructor called\n";
     for(int i=0;i<row;i++)
     delete element[i];
     delete element;
-}
+}*/
 void MATRIX::matrix_input(void)
-{   
+{
     for(int i=0;i<row;i++)
     {
         for(int j=0;j<coloumn;j++)
         {
             cout<<"\nEnter the element at row = "<<i+1<<" and coloumn = "<<j+1<<" : ";
             cin>>element[i][j];
-            //getdigit(element[i][j]);
+            getdigit(element[i][j]);
         }
     } 
 }
 void MATRIX::display(void)
 { 
     int i,j;  
-    cout<<row<<" "<<coloumn<<endl;
     for(i=0;i<row;i++)
     {
         cout<<"\n[ ";
         for(j=0;j<coloumn;j++)
         {
             cout<<element[i][j];
-            //printspace(digit-noofdigit(element[i][j])+1);
+            printspace(digit-noofdigit(element[i][j])+1);
         }
         cout<<"]";
     }
 }
-MATRIX matrix_add(MATRIX A,MATRIX B)
+MATRIX matrix_add(const MATRIX &A,const MATRIX &B)
 {
     int i,j;
     MATRIX C;
@@ -105,7 +103,7 @@ MATRIX matrix_traspose(MATRIX A)
     }
     return B;
 }
-MATRIX matrix_mult(MATRIX A,MATRIX B)
+MATRIX matrix_mult(const MATRIX &A,const MATRIX &B)
 {
     int i,j,k;
     MATRIX C;
@@ -132,7 +130,7 @@ MATRIX matrix_mult(MATRIX A,MATRIX B)
     cout<<"\nNot possible to find the product of the given matrices.";
     return C;
 }
-float matrix_determinant(MATRIX A)
+float matrix_determinant(const MATRIX &A)
 {
     float eeta;
     for(int i=0;i<A.coloumn-1;i++)
@@ -154,7 +152,7 @@ float matrix_determinant(MATRIX A)
     determinant=determinant*A.element[i][i];
     return determinant;
 }
-int matrix_trace(MATRIX A)
+int matrix_trace(const MATRIX &A)
 {
     int trace=0;
     if(A.row==A.coloumn)
@@ -187,33 +185,27 @@ void MATRIX::printspace(int x)
 }
 int main()
 {
-    //MATRIX A,B,C;
+    MATRIX A,B,C;
     int row1,coloumn1,row2,coloumn2,action;
+    l4:
     cout<<"\n List of actions\n\n Find the traspose of a matrix 		= 1\n Find the sum of two matrix 		= 2\n Find the product of two matrix 	= 3\n Find the determinant of matrix 	= 4\n Find the trace of the matrix  =5";
     cout<<"\n\n Enter the action : ";
     cin>>action;
     switch (action)
     {
-    case 1 :{
-             cout<<"\nEnter the number of rows : ";
+    case 1 :cout<<"\nEnter the number of rows : ";
             cin>>row1;
             cout<<"\nEnter the number of coloumns : ";
             cin>>coloumn1;
-            MATRIX D(row1,coloumn1),E;
-            //A=MATRIX(row1,coloumn1);
-            //A.matrix_input();
-            D.matrix_input();
-            //A.display();
-            D.display();
-            //B=matrix_traspose(A);
-           // E=matrix_traspose(D);
-          //  cout<<"\nTranspose of the given matrix = ";
-            //B.display();
-//E.display();
-    }
-
-             break;
-    /*case 2 :cout<<"\nFirst Matix : ";
+            A=MATRIX(row1,coloumn1);
+            A.matrix_input();
+            A.display();
+            B=matrix_traspose(A);
+            cout<<"\nTranspose of the given matrix = ";
+            B.display();
+            break;
+    case 2 :l1:
+            cout<<"\nFirst Matix : ";
             cout<<"\nEnter the number of rows : ";
             cin>>row1;
             cout<<"\nEnter the number of coloumns : ";
@@ -238,9 +230,11 @@ int main()
             else 
             {
                 cout<<"\nThe two matrices are not similar ,try again";
+                goto l1;
             }
             break;
-    case 3 :cout<<"\nFirst Matix : ";
+    case 3 :l2:
+            cout<<"\nFirst Matix : ";
             cout<<"\nEnter the number of rows : ";
             cin>>row1;
             cout<<"\nEnter the number of coloumns : ";
@@ -265,9 +259,10 @@ int main()
             else 
             {
                 cout<<"\nThe given matrix cannot be multiplied, try again";
+                goto l2;
             }
             break;
-    case 4 :
+    case 4 :l3:
             cout<<"\nEnter the number of rows : ";
             cin>>row1;
             cout<<"\nEnter the number of coloumns : ";
@@ -282,6 +277,7 @@ int main()
             else
             {
                 cout<<"\nThe matrix is not sqaure matrix so cannot find determinant, try again";
+                goto l3;
             }
             break;
     case 5 :cout<<"Enter the number of rows/coloumns    : ";
@@ -291,8 +287,9 @@ int main()
             A.display();
             cout<<"\nTrace of the matrix is   : ";
             cout<<matrix_trace(A);
-            break;*/
+            break;
     default:cout<<"Invalid action, try again";
+            goto l4;
             break;
     }
     return 0;
