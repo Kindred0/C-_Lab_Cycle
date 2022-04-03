@@ -12,17 +12,22 @@ class employee:public person
     float salary;
     int e_code;
 };
-class teacher:public employee
+class Room
 {
-    int standard,MA,DA;
-    char devision;
+    protected:
+    int standard;
+    char division;
+};
+class teacher:public employee, public Room
+{
+    int MA,DA;
     public:
     void get_data(void);
     void put_data(void)
     {
         cout<<"\nName\t\t\t: "<<name;
         cout<<"\nCode\t\t\t: "<<e_code;
-        cout<<"\nTeaching Class\t\t: "<<standard<<devision;
+        cout<<"\nTeaching Class\t\t: "<<standard<<division;
         cout<<"\nSalary\t\t\t: "<<salary;
     }
 };
@@ -34,8 +39,8 @@ void teacher::get_data(void)
     cin>>e_code;
     cout<<"Teaching Standard\t: ";
     cin>>standard;
-    cout<<"Teaching Devision\t: ";
-    cin>>devision;
+    cout<<"Teaching division\t: ";
+    cin>>division;
     cout<<"MA\t\t\t: ";
     cin>>MA;
     if(MA>7000)
